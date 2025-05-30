@@ -1,0 +1,80 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Álbum de la Boda</title>
+  <style>
+    body {
+      font-family: sans-serif;
+      margin: 0;
+      background: #f8f9fa;
+      text-align: center;
+      padding: 20px;
+    }
+    .container {
+      max-width: 700px;
+      margin: auto;
+      background: white;
+      padding: 40px;
+      border-radius: 10px;
+      box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
+    }
+    h1 {
+      color: #cc3366;
+    }
+    input[type="file"] {
+      margin: 20px 0;
+    }
+    button {
+      background-color: #cc3366;
+      color: white;
+      border: none;
+      padding: 10px 20px;
+      font-size: 16px;
+      border-radius: 5px;
+      cursor: pointer;
+    }
+    .message {
+      margin-top: 20px;
+      color: green;
+      font-weight: bold;
+    }
+  </style>
+</head>
+<body>
+  <div class="container">
+    <h1>💍 Álbum de la Boda</h1>
+    <p>¡Gracias por acompañarnos! Puedes subir tus fotos del evento aquí.</p>
+
+    <form id="uploadForm" enctype="multipart/form-data">
+      <input type="file" name="photos[]" id="photos" multiple accept="image/*" required /><br />
+      <button type="submit">Subir Fotos</button>
+    </form>
+    <div class="message" id="message"></div>
+  </div>
+
+  <script>
+    const form = document.getElementById('uploadForm');
+    const message = document.getElementById('message');
+
+    form.addEventListener('submit', async (e) => {
+      e.preventDefault();
+      const formData = new FormData(form);
+
+      const response = await fetch('upload.php', {
+        method: 'POST',
+        body: formData
+      });
+
+      if (response.ok) {
+        message.textContent = '¡Fotos subidas correctamente!';
+        form.reset();
+      } else {
+        message.textContent = 'Hubo un error al subir las fotos.';
+        message.style.color = 'red';
+      }
+    });
+  </script>
+</body>
+</html>
